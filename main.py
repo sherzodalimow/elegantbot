@@ -7,6 +7,7 @@ import gspread
 import os
 import json
 
+
 # Включаем отладку
 logging.basicConfig(level=logging.DEBUG)
 
@@ -15,7 +16,12 @@ API_TOKEN = '7793273417:AAEQDFj3MFUaIo9PMKP9jgJpqN4zWvFBvMY'
 bot = telebot.TeleBot(API_TOKEN)
 
 # Google Sheets
-creds_dict = json.loads(os.environ['GOOGLE_CREDS'])
+creds_json = os.environ['GOOGLE_CREDS']
+creds_json = creds_json.replace('\\n', '\n')  # ✅ ОБЯЗАТЕЛЬНО, потому что внутри строка с \\n
+
+with open("credentials.json", "r") as f:
+    creds_dict = json.load(f)
+
 
 SPREADSHEET_ID = '18H408uOOG8fgDlUUhSGY1I4viy88x7CNWrbwRS6bp9k'
 
