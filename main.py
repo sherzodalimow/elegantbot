@@ -15,7 +15,7 @@ API_TOKEN = '7793273417:AAEQDFj3MFUaIo9PMKP9jgJpqN4zWvFBvMY'
 bot = telebot.TeleBot(API_TOKEN)
 
 # Google Sheets
-json_creds = json.loads(os.environ['GOOGLE_CREDENTIALS'])
+creds_dict = json.loads(os.environ['GOOGLE_CREDS'])
 
 SPREADSHEET_ID = '18H408uOOG8fgDlUUhSGY1I4viy88x7CNWrbwRS6bp9k'
 
@@ -30,7 +30,7 @@ scope = [
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
 ]
-creds = ServiceAccountCredentials.from_json_keyfile_dict(json_creds, scope)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
 sheet_xisob = client.open_by_key(SPREADSHEET_ID).worksheet(SHEET_XISOB)
 sheet_balance = client.open_by_key(SPREADSHEET_ID).worksheet(SHEET_BALANCE)
