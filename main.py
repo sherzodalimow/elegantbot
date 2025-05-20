@@ -23,34 +23,29 @@ scope = [
 ]
 
 
+# Загружаем переменную окружения GOOGLE_CREDS или читаем из файла
 creds_json = os.environ.get("GOOGLE_CREDS")
 
-# Если переменной нет — читаем из файла
 if creds_json is None:
-    print("Переменная GOOGLE_CREDS не найдена. Загружаем из файла creds.json")
-    with open("creds.json", "r", encoding="utf-8") as f:
-        creds_json = f.read()
+    print("⚠ Переменная GOOGLE_CREDS не найдена. Загружаем из файла creds.json")
+    try:
+        with open("creds.json", "r", encoding="utf-8") as f:
+            creds_dict = json.load(f)  # ✅ Загружаем сразу как JSON
+    except Exception as e:
+        raise ValueError(f"❌ Ошибка загрузки файла creds.json: {e}")
 else:
-    print("Переменная GOOGLE_CREDS найдена")
+    print("✅ Переменная GOOGLE_CREDS найдена")
+    try:
+        creds_json = creds_json.replace('\\n', '\n')  # ✅ Восстановление переносов
+        creds_dict = json.loads(creds_json)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"❌ Ошибка парсинга переменной GOOGLE_CREDS: {e}")
 
-# Преобразуем переносы строк внутри ключа
-creds_json = os.environ.get("GOOGLE_CREDS")
-
-# Если переменной нет — читаем из файла
-if creds_json is None:
-    print("Переменная GOOGLE_CREDS не найдена. Загружаем из файла creds.json")
-    with open("creds.json", "r", encoding="utf-8") as f:
-        creds_dict = json.load(f)  # ✅ Загружаем сразу как JSON
-else:
-    print("Переменная GOOGLE_CREDS найдена")
-    creds_json = creds_json.replace('\\n', '\n')  # ✅ Восстанавливаем переносы
-    creds_dict = json.loads(creds_json)
-
-print("✅ Ключ успешно загружен.")
 
 
 # ✅ Авторизация в Google Sheets
-creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name("C:/Users/SHERZOD ALIMOV/Desktop/i/projects bot/Shhet-bot/credentials.json", scope)
+
 
 
 SPREADSHEET_ID = '18H408uOOG8fgDlUUhSGY1I4viy88x7CNWrbwRS6bp9k'
