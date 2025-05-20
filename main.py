@@ -46,6 +46,9 @@ else:
     creds_json = creds_json.replace('\\n', '\n')  # ✅ Восстанавливаем переносы
     creds_dict = json.loads(creds_json)
 
+print("✅ Ключ успешно загружен.")
+
+
 # ✅ Авторизация в Google Sheets
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 
